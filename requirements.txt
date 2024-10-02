@@ -1,5 +1,6 @@
 SPARQLWrapper
 langchain_ollama
 pydantic
-
+langchain
+ollama
 
