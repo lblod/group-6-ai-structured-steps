@@ -46,10 +46,4 @@ def paginated_bindings(sparql_query, offset=0, limit=200):
     return bindings
 
 def query_product_with_uri(uri):
-    all_results = paginated_bindings(QUERY_PRODUCT.substitute(uri=sparql_escape_uri(uri)))
-
-    products = {}
-    for prod in all_results:
-        products[prod['subject']['value']] = prod['title']['value'] + " | " + prod["description"]['value']
-
-    return products
+    return paginated_bindings(QUERY_PRODUCT.substitute(uri=sparql_escape_uri(uri)))
