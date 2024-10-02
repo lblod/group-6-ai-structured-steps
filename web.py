@@ -32,9 +32,9 @@ def process_product(product: str) -> dict:
     {text}
     Your output consists only out of a JSON object containing ONLY the fields specified above and their corresponding value, extracted from the text. Return only the JOSN object, no other words/phrases before or after!"""
     
-    model_name = # TODO: DEFINE
+    model_name = "llama3.2" # TODO: DEFINE
     temperature = 0.1
-    host = # TODO: DEFINE
+    host = "http://ollama:11434/" # TODO: DEFINE
     seed = 42
     
     messages = [
@@ -46,7 +46,6 @@ def process_product(product: str) -> dict:
     
     llama_client = Client(host=host)
     
-    
     response = llama_client.chat(config.model, messages=messages, options={"ctx_length": 16384, "temperature": config.temperature}, format='json')["message"]
     if not isinstance(response, str):
         response = response['content']
@@ -54,15 +53,22 @@ def process_product(product: str) -> dict:
     
     return json.loads(extraction)
 
-@app.route("/get_structured_steps", methods=["POST"])
-def ingest(uri):
-
+@app.route("/get_structured_steps", methods=["GET"])
+def ingest():
+    uri = request.args.get('uri')
     logging.info(f'start process of finding structured steps for product {uri}')
-    product = query_product_with_uri(uri)[0] # take one
-    print(product)
     
-    product_as_dict = process_product(product) # Currently assumed that product and its information will be provided as string
+    product = query_product_with_uri(uri)[0] # take one
+    print(product, flush=True)
+
+    productString = "{} {}".format(product["procedureTitle"]["value"], product["procedureDescription"]["value"]) 
+    
+    product_as_dict = process_product(productString) # Currently assumed that product and its information will be provided as string
 
     # TODO: DO SOMETHING WITH product_as_dict
 
-    return "RESULT"
+    print(product_as_dict, flush=True)
+
+    return product_as_dict
+
+print("This is our code <3")
