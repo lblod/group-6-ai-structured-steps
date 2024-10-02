@@ -61,7 +61,7 @@ def ingest():
     product = query_product_with_uri(uri)[0] # take one
     print(product, flush=True)
 
-    productString = "{} {}".format(product["procedureTitle"]["value"], product["procedureDescription"]["value"]) 
+    productString = "Product title: {} Procedure description: {} Product description: {}".format(product["title"]["value"], product["procedureDescription"]["value"], product["description"]["value"])
     
     product_as_dict = process_product(productString) # Currently assumed that product and its information will be provided as string
 
