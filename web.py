@@ -11,7 +11,7 @@ def ingest(uri):
 
     logging.info(f'start process of finding structured steps for product {uri}')
     product = query_product_with_uri(uri)[0] # take one
-
+    print(product)
     # todo: make structured
 
 
